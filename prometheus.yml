@@ -10,3 +10,6 @@ scrape_configs:
   - job_name: node-exporter
     static_configs:
       - targets: ['68.183.187.164:9100']
+  - job_name: nginx-log-exporter
+    static_configs:
+      - targets: ['68.183.187.164:4040']
