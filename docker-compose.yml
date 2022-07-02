@@ -8,6 +8,8 @@ services:
       - 3000:3000
     networks:
       - grafanaLabs
+    volumes:
+      - grafana:/var/lib/grafana
   prometheus:
     container_name: prometheus
     image: prom/prometheus:latest
@@ -17,6 +19,28 @@ services:
       - 9090:9090
     networks:
       - grafanaLabs
+  loki:
+    container_name: loki
+    image: grafana/loki:latest
+    ports:
+      - 9093:9093
+      - 3100:3100
+    volumes:
+      - ./loki-config.yaml:/etc/loki-config.yaml
+    networks:
+      - grafanaLabs
+    command: '-config.file=/etc/loki-config.yaml'
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:2.5.0
 
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail-config.yaml
+    networks:
+      - grafanaLabs
+    command: -config.file=/etc/promtail-config.yaml
 networks:
   grafanaLabs:
+
+volumes:
+  grafana:
